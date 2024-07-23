@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import string
 import pickle
-df = pd.read_csv('new.csv',error_bad_lines=False, engine ='python')
+df = pd.read_csv('new.csv', on_bad_lines='skip', engine ='python')
 df = df.dropna()
 from sklearn.feature_extraction.text import TfidfVectorizer
 
