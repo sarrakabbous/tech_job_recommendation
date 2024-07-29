@@ -38,11 +38,23 @@ def get_recommendations(title, cosine_sim=cosine_sim):
 st.header('Tech Jobs Recommender')
 
 # Load pickled data
-movies = pickle.load(open('job_list.pkl', 'rb'))
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+try:
+    with open('job_list.pkl', 'rb') as file:
+        movies = pickle.load(file)
+    with open('similarity.pkl', 'rb') as file:
+        similarity = pickle.load(file)
+except Exception as e:
+    st.error(f"Error loading pickle files: {e}")
+    st.stop()
+
+# Check if 'jobtitle' exists in the loaded data
+if isinstance(movies, pd.DataFrame) and 'jobtitle' in movies.columns:
+    toon_list = movies['jobtitle'].values
+else:
+    st.error("The 'job_list.pkl' file does not contain the expected structure.")
+    st.stop()
 
 # Dropdown list for job titles
-toon_list = movies['jobtitle'].values
 selected_toon = st.selectbox(
     "Type or select a job from the dropdown",
     toon_list
